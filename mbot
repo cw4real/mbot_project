@@ -1,0 +1,70 @@
+#include "MeMCore.h"
+
+MeDCMotor motorL(M1);
+MeDCMotor motorR(M2);
+MeRGBLed led(PORT_7);
+MeLineFollower line(PORT_2);
+MeUltrasonicSensor ultraSensor(PORT_3);
+int s=0;
+int dis;
+int a , b , c ,i;
+void setup() {
+  // put your setup code here, to run once:
+    Serial.begin(9600);
+}
+
+void loop() {
+   dis=ultraSensor.distanceCm();
+   if (dis<7)
+   {
+    motorL.run(-255);
+    motorR.run(255);
+    delay(2000);
+    }
+    else{
+      motorL.run(-100);
+    motorR.run(100);
+      }
+   s=line.readSensors();
+   
+   if(s==3)
+   {
+    motorL.run(-150);
+    motorR.run(150);
+  led.setColor(0,0,255,100);
+  led.show();
+  led.setColor(0,0,255,100);
+  led.show();
+   }
+   else if(s==2)
+    {
+    motorL.run(150);
+    motorR.run(150);
+  led.setColor(0,0,255,100);
+  led.show();
+  led.setColor(0,0,255,100);
+  led.show();
+    }
+   else if(s==1)
+    {
+     motorL.run(-150);
+     motorR.run(-150);
+  led.setColor(0,0,255,100);
+  led.show();
+  led.setColor(0,0,255,100);
+  led.show();
+      }
+   else if(s==0)
+    {
+      motorL.run(150);
+      motorR.run(-150);
+      delay(1000);
+           motorL.run(-150);
+     motorR.run(-150);
+     delay(1000);
+  led.setColor(0,0,255,100);
+  led.show();
+  led.setColor(0,0,255,100);
+  led.show();
+      }   
+}
